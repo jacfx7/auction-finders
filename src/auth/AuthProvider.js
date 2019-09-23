@@ -1,127 +1,164 @@
-import app from "firebase/app";
-import "firebase/auth";
-import { AUTH_LOGIN, AUTH_LOGOUT, AUTH_ERROR, AUTH_CHECK, AUTH_GET_PERMISSIONS } from "react-admin";
-//import { log, CheckLogging } from "react-admin-firebase/src/misc/logger";
-//import { RAFirebaseOptions } from "react-admin-firebase/src/providers/RAFirebaseOptions";
-//import { FirebaseWrapper } from "react-admin-firebase/src/providers/database/firebase/FirebaseWrapper";
+import app from 'firebase/app';
+import 'firebase/auth';
+//import 'firebase/database';
+import 'firebase/firestore';
+import { AUTH_LOGIN, AUTH_LOGOUT, AUTH_ERROR, AUTH_CHECK, AUTH_GET_PERMISSIONS } from 'react-admin';
+import { FirebaseDataProvider } from 'react-admin-firebase';
+import { config } from 'rxjs';
 
 class AuthClient {
-    //let auth: FirebaseAuth;
-
-    constructor(firebaseConfig, options) {
-        if (!app.apps.length) {
-            app.initializeApp(firebaseConfig);
-        }
-        //log("Auth Client: initializing...", { firebaseConfig, options });
-        /* const fireWrapper = new FirebaseWrapper();
-        fireWrapper.init(firebaseConfig, options); */
-        this.auth = app.auth();
-
-        this.googleProvider = new app.auth.GoogleAuthProvider();
-        this.facebookProvider = new app.auth.FacebookAuthProvider();
-        this.twitterProvider = new app.auth.TwitterAuthProvider();
+  constructor(firebaseConfig, options) {
+    if (!app.apps.length) {
+      app.initializeApp(firebaseConfig);
     }
+    this.auth = app.auth();
+    this.db = app.firestore();
 
-    async HandleAuthLogin(params) {
-        const { username, password } = params;
+    this.googleProvider = new app.auth.GoogleAuthProvider();
+    this.facebookProvider = new app.auth.FacebookAuthProvider();
+    this.twitterProvider = new app.auth.TwitterAuthProvider();
+  }
 
-        try {
-            const user = await this.auth.signInWithEmailAndPassword(username, password);
-            //log("HandleAuthLogin: user sucessfully logged in", { user });
-        } catch (e) {
-            //log("HandleAuthLogin: invalid credentials", { params });
-            throw new Error("Login error: invalid credentials");
-        }
+  async HandleAuthLogin(params) {
+    const { username, password } = params;
+
+    try {
+      const user = await this.auth.signInWithEmailAndPassword(username, password);
+      //this.db.
+    } catch (e) {
+      throw new Error('Login error: invalid credentials');
     }
+  }
 
-    async HandleAuthLogout(params) {
-        await this.auth.signOut();
+  async HandleAuthLogout(params) {
+    await this.auth.signOut();
+  }
+
+  async HandleAuthError(params) {}
+
+  async HandleAuthCheck(params) {
+    try {
+      const user = await this.getUserLogin();
+    } catch (e) {
+      throw new Error('Auth check error: ' + e);
     }
+  }
 
-    async HandleAuthError(params) {}
+  async getUserLogin() {
+    return new Promise((resolve, reject) => {
+      this.auth.onAuthStateChanged(authUser => {
+        if (authUser) {
+          this.user(authUser.uid)
+            .get()
+            .then(async snapshot => {
+              let dbUser = snapshot.data();
 
-    async HandleAuthCheck(params) {
-        try {
-            const user = await this.getUserLogin();
-            //log("HandleAuthCheck: user is still logged in", { user });
-        } catch (e) {
-            //log("HandleAuthCheck: ", { e });
-            throw new Error("Auth check error: " + e);
-        }
-    }
+              if (!dbUser) {
+                dbUser = await this.createDbUser(authUser);
+              }
+              // default empty roles
+              if (dbUser && !dbUser.roles) {
+                dbUser.roles = {};
+              }
 
-    async getUserLogin() {
-        return new Promise((resolve, reject) => {
-            this.auth.onAuthStateChanged(user => {
-                if (user) {
-                    resolve(user);
-                } else {
-                    reject("User not logged in");
-                }
+              // merge auth and db user
+              authUser = {
+                uid: authUser.uid,
+                email: authUser.email,
+                emailVerified: authUser.emailVerified,
+                providerData: authUser.providerData,
+                ...dbUser
+              };
+
+              await this.updateUserLastLogin(authUser);
+
+              resolve(authUser);
             });
-        });
-    }
-
-    async HandleGetCurrent() {
-        try {
-            const user = await this.getUserLogin();
-            //log("HandleGetCurrent: current user", { user });
-            return user;
-        } catch (e) {
-            //log("HandleGetCurrent: no user is logged in", { e });
-            return null;
+        } else {
+          reject('User not logged in');
         }
-    }
+      });
+    });
+  }
 
-    async HandleGetPermissions() {
-        try {
-            const user = await this.getUserLogin();
-            const token = await user.getIdTokenResult();
+  async createDbUser(user) {
+    return this.user(user.uid).set(
+      {
+        username: user.email,
+        email: user.email,
+        createDate: new Date(Date.now()),
+        lastLoginDate: new Date(Date.now()),
+        permissions: 'user'
+      },
+      { merge: true }
+    );
+  }
 
-            return token.claims;
-        } catch (e) {
-            /*log("HandleGetPermission: no user is logged in or tokenResult error", {
-                e
-            });*/
-            return null;
-        }
+  async updateUserLastLogin(authUser) {
+    const createdDate = authUser.createDate ? authUser.createDate : new Date(Date.now);
+    this.user(authUser.uid).set(
+      {
+        createDate: createdDate,
+        lastLoginDate: new Date(Date.now())
+      },
+      { merge: true }
+    );
+  }
+
+  async HandleGetCurrent() {
+    try {
+      const user = await this.getUserLogin();
+      return user;
+    } catch (e) {
+      return null;
     }
+  }
+
+  async HandleGetPermissions() {
+    try {
+      return this.getUserLogin().then(user => {
+        return user.roles;
+      });
+    } catch (e) {
+      return null;
+    }
+  }
+
+  user = uid => this.db.doc(`users/${uid}`);
+
+  users = () => this.db.collection('users');
 }
 
 export function AuthProvider(firebaseConfig, options) {
-    VerifyAuthProviderArgs(firebaseConfig, options);
-    const auth = new AuthClient(firebaseConfig, options);
-    //CheckLogging(firebaseConfig, options);
+  VerifyAuthProviderArgs(firebaseConfig, options);
+  const auth = new AuthClient(firebaseConfig, options);
 
-    return async (type, params) => {
-        /*log("Auth Event: ", { type, params });
-        { */
-        switch (type) {
-            case AUTH_LOGIN:
-                return auth.HandleAuthLogin(params);
-            case AUTH_LOGOUT:
-                return auth.HandleAuthLogout(params);
-            case AUTH_ERROR:
-                return auth.HandleAuthError(params);
-            case AUTH_CHECK:
-                return auth.HandleAuthCheck(params);
-            case "AUTH_GETCURRENT":
-                return auth.HandleGetCurrent();
-            case AUTH_GET_PERMISSIONS:
-                return auth.HandleGetPermissions();
-            default:
-                throw new Error("Unhandled auth type:" + type);
-        }
-        //}
-    };
+  return async (type, params) => {
+    switch (type) {
+      case AUTH_LOGIN:
+        return auth.HandleAuthLogin(params);
+      case AUTH_LOGOUT:
+        return auth.HandleAuthLogout(params);
+      case AUTH_ERROR:
+        return auth.HandleAuthError(params);
+      case AUTH_CHECK:
+        return auth.HandleAuthCheck(params);
+      case 'AUTH_GETCURRENT':
+        return auth.HandleGetCurrent();
+      case AUTH_GET_PERMISSIONS:
+        return auth.HandleGetPermissions();
+      default:
+        throw new Error('Unhandled auth type:' + type);
+    }
+  };
 }
 
 function VerifyAuthProviderArgs(firebaseConfig, options) {
-    const hasNoApp = !options || !options.app;
-    const hasNoConfig = !firebaseConfig;
-    if (hasNoConfig && hasNoApp) {
-        throw new Error(
-            "Please pass the Firebase firebaseConfig object or options.app to the FirebaseAuthProvider"
-        );
-    }
+  const hasNoApp = !options || !options.app;
+  const hasNoConfig = !firebaseConfig;
+  if (hasNoConfig && hasNoApp) {
+    throw new Error(
+      'Please pass the Firebase firebaseConfig object or options.app to the FirebaseAuthProvider'
+    );
+  }
 }

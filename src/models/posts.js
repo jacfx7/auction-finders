@@ -33,16 +33,18 @@ const PostFilter = props => (
   </Filter>
 );
 
-export const PostList = props => (
+export const PostList = ({ permissions, ...props }) => (
   <List {...props} filters={<PostFilter />}>
     <Datagrid>
       <TextField source="title" />
       <TextField source="updatedby" />
       <TextField source="createdby" />
       <RichTextField source="body" />
-      <ReferenceField label="User" source="user_id" reference="users">
-        <TextField source="name" />
-      </ReferenceField>
+      {permissions['ADMIN'] === 'admin' && (
+        <ReferenceField label="User" source="user_id" reference="users">
+          <TextField source="name" />
+        </ReferenceField>
+      )}
       <ShowButton label="" />
       <EditButton label="" />
       <DeleteButton label="" redirect={false} />
@@ -50,7 +52,7 @@ export const PostList = props => (
   </List>
 );
 
-export const PostShow = props => (
+export const PostShow = ({ permissions, ...props }) => (
   <Show {...props}>
     <SimpleShowLayout>
       <TextField source="id" />
@@ -58,9 +60,11 @@ export const PostShow = props => (
       <TextField source="lastupdate" />
       <TextField source="title" />
       <RichTextField source="body" />
-      <ReferenceField label="User" source="user_id" reference="users">
-        <TextField source="name" />
-      </ReferenceField>
+      {permissions.role === 'admin' && (
+        <ReferenceField label="User" source="user_id" reference="users">
+          <TextField source="name" />
+        </ReferenceField>
+      )}
       <FileField source="files_multiple.src" title="files_multiple.title" multiple />
     </SimpleShowLayout>
   </Show>
@@ -71,12 +75,7 @@ export const PostCreate = props => (
     <SimpleForm>
       <TextInput source="title" />
       <RichTextInput source="body" />
-      <ReferenceInput
-        label="User"
-        source="user_id"
-        reference="users"
-        // filter={{ isAdmin: true }}
-      >
+      <ReferenceInput label="User" source="user_id" reference="users">
         <SelectInput label="User" optionText="name" />
       </ReferenceInput>
       <FileInput source="files_multiple" multiple label="Files with (multiple)">
@@ -101,12 +100,7 @@ export const PostEdit = props => (
       <DisabledInput source="lastupdate" />
       <TextInput source="title" />
       <RichTextInput source="body" />
-      <ReferenceInput
-        label="User"
-        source="user_id"
-        reference="users"
-        // filter={{ isAdmin: true }}
-      >
+      <ReferenceInput label="User" source="user_id" reference="users">
         <SelectInput label="User" optionText="name" />
       </ReferenceInput>
       <FileInput source="files_multiple" multiple label="Files with (multiple)">
