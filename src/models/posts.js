@@ -40,7 +40,7 @@ export const PostList = ({ permissions, ...props }) => (
       <TextField source="updatedby" />
       <TextField source="createdby" />
       <RichTextField source="body" />
-      {permissions['ADMIN'] === 'admin' && (
+      {permissions === 'admin' && (
         <ReferenceField label="User" source="user_id" reference="users">
           <TextField source="name" />
         </ReferenceField>
@@ -60,7 +60,7 @@ export const PostShow = ({ permissions, ...props }) => (
       <TextField source="lastupdate" />
       <TextField source="title" />
       <RichTextField source="body" />
-      {permissions.role === 'admin' && (
+      {permissions === 'admin' && (
         <ReferenceField label="User" source="user_id" reference="users">
           <TextField source="name" />
         </ReferenceField>

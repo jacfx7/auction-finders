@@ -1,7 +1,8 @@
-import React from 'react';
+import React, { Component } from 'react';
 import { Admin, Resource } from 'react-admin';
 import { FirebaseDataProvider } from 'react-admin-firebase';
 import UserIcon from '@material-ui/icons/People';
+import { Route } from 'react-router-dom';
 
 import './App.css';
 import { FirebaseConfig } from './config/keys';
@@ -9,6 +10,8 @@ import { PostList, PostShow, PostCreate, PostEdit } from './models/posts';
 import { UserList, UserShow, UserCreate, UserEdit } from './models/users';
 import CustomLoginPage from './CustomLoginPage';
 import { AuthProvider } from './auth/AuthProvider';
+import { ProfileEdit } from './models/profile';
+import CustomLayout from './template/CustomLayout';
 
 const options = {
   logging: true
@@ -21,10 +24,15 @@ const options = {
 const dataProvider = FirebaseDataProvider(FirebaseConfig, options);
 const authProvider = AuthProvider(FirebaseConfig, options);
 
-class App extends React.Component {
+class App extends Component {
   render() {
     return (
-      <Admin loginPage={CustomLoginPage} dataProvider={dataProvider} authProvider={authProvider}>
+      <Admin
+        loginPage={CustomLoginPage}
+        dataProvider={dataProvider}
+        authProvider={authProvider}
+        customRoutes={[<Route key="my-profile" path="/my-profile" component={ProfileEdit} />]}
+      >
         {permissions => [
           <Resource
             name="posts"
@@ -33,7 +41,7 @@ class App extends React.Component {
             create={PostCreate}
             edit={PostEdit}
           />,
-          permissions.role === 'admin' ? (
+          permissions === 'admin' ? (
             <Resource
               name="users"
               icon={UserIcon}

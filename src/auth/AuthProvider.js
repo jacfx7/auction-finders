@@ -20,11 +20,28 @@ class AuthClient {
   }
 
   async HandleAuthLogin(params) {
-    const { username, password } = params;
-
+    const { username, password, mode } = params;
+    debugger;
     try {
-      const user = await this.auth.signInWithEmailAndPassword(username, password);
-      //this.db.
+      let login;
+
+      switch (mode) {
+        case 'facebook':
+          login = await this.auth.signInWithPopup(this.facebookProvider);
+          break;
+        case 'google':
+          login = await this.auth.signInWithPopup(this.googleProvider);
+          break;
+        case 'twitter':
+          login = await this.auth.signInWithPopup(this.twitterProvider);
+          break;
+        default:
+          login = await this.auth.signInWithEmailAndPassword(username, password);
+          break;
+      }
+
+      debugger;
+      return await this.mergeUserDbUser(login.user);
     } catch (e) {
       throw new Error('Login error: invalid credentials');
     }
@@ -94,6 +111,36 @@ class AuthClient {
     );
   }
 
+  async mergeUserDbUser(user) {
+    this.user(user.uid)
+      .get()
+      .then(async snapshot => {
+        debugger;
+        let dbUser = snapshot.data();
+
+        if (!dbUser) {
+          dbUser = await this.createDbUser(user);
+        }
+        // default empty roles
+        if (dbUser && !dbUser.roles) {
+          dbUser.roles = {};
+        }
+
+        // merge auth and db user
+        user = {
+          uid: user.uid,
+          email: user.email,
+          emailVerified: user.emailVerified,
+          providerData: user.providerData,
+          ...dbUser
+        };
+
+        await this.updateUserLastLogin(user);
+
+        return user;
+      });
+  }
+
   async updateUserLastLogin(authUser) {
     const createdDate = authUser.createDate ? authUser.createDate : new Date(Date.now);
     this.user(authUser.uid).set(
@@ -117,7 +164,13 @@ class AuthClient {
   async HandleGetPermissions() {
     try {
       return this.getUserLogin().then(user => {
-        return user.roles;
+        if (user.roles['ADMIN']) {
+          return 'admin';
+        }
+        if (user.roles['SUPER']) {
+          return 'super';
+        }
+        return 'user';
       });
     } catch (e) {
       return null;

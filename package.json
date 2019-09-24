@@ -3,6 +3,8 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "@material-ui/core": "^4.4.3",
+    "@material-ui/icons": "^4.4.3",
     "firebase": "^6.6.2",
     "material-ui": "^0.20.2",
     "prop-types": "^15.7.2",
@@ -11,6 +13,7 @@
     "react-admin": "^2.9.6",
     "react-admin-firebase": "^0.8.9",
     "react-dom": "^16.9.0",
+    "react-redux": "~5.0.7",
     "react-scripts": "3.1.2",
     "redux-saga": "^1.1.1",
     "source-map-loader": "^0.2.4"
