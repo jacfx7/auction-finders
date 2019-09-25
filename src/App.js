@@ -11,7 +11,7 @@ import { UserList, UserShow, UserCreate, UserEdit } from './models/users';
 import CustomLoginPage from './template/CustomLoginPage';
 import { AuthProvider } from './auth/AuthProvider';
 import { ProfileEdit } from './models/profile';
-import CustomLayout from './template/CustomLayout';
+//import CustomLayout from './template/CustomLayout';
 
 const options = {
   logging: true

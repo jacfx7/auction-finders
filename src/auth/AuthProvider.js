@@ -66,7 +66,8 @@ class AuthClient {
 
   async HandleAuthCheck(params) {
     try {
-      const user = await this.getUserLogin();
+      await this.getUserLogin();
+      //const user = await this.getUserLogin();
     } catch (e) {
       throw new Error('Auth check error: ' + e);
     }
