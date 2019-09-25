@@ -9,6 +9,8 @@ import TextField from '@material-ui/core/TextField';
 import Link from '@material-ui/core/Link';
 import Box from '@material-ui/core/Box';
 import Typography from '@material-ui/core/Typography';
+import Card from '@material-ui/core/Card';
+import CardContent from '@material-ui/core/CardContent';
 import { makeStyles } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
 import GoogleButton from 'react-google-button';
@@ -76,52 +78,56 @@ class CustomLoginPageView extends Component {
     return (
       <Container component="main" maxWidth="xs">
         <CssBaseline />
-        <div className={classes.paper}>
-          <Typography component="h1" variant="h5">
-            Sign in
-          </Typography>
-          <form className={classes.form} noValidate onSubmit={this.submit}>
-            <TextField
-              variant="outlined"
-              margin="normal"
-              required
-              fullWidth
-              id="email"
-              label="Email Address"
-              name="email"
-              autoComplete="email"
-              onChange={this.onChange}
-              autoFocus
-            />
-            <TextField
-              variant="outlined"
-              margin="normal"
-              required
-              fullWidth
-              name="password"
-              label="Password"
-              type="password"
-              id="password"
-              onChange={this.onChange}
-              autoComplete="current-password"
-            />
-            <Button
-              type="submit"
-              fullWidth
-              variant="contained"
-              color="primary"
-              className={classes.submit}
-            >
-              Sign In
-            </Button>
-          </form>
-          <div className="mt-3">
-            <GoogleButton onClick={() => this.socialLogin('google')} />
-          </div>
-        </div>
-        <Box mt={8}>
-          <Copyright />
-        </Box>
+        <Card className="mt-5">
+          <CardContent>
+            <div className={classes.paper}>
+              <Typography component="h1" variant="h5">
+                Sign in
+              </Typography>
+              <form className={classes.form} noValidate onSubmit={this.submit}>
+                <TextField
+                  variant="outlined"
+                  margin="normal"
+                  required
+                  fullWidth
+                  id="email"
+                  label="Email Address"
+                  name="email"
+                  autoComplete="email"
+                  onChange={this.onChange}
+                  autoFocus
+                />
+                <TextField
+                  variant="outlined"
+                  margin="normal"
+                  required
+                  fullWidth
+                  name="password"
+                  label="Password"
+                  type="password"
+                  id="password"
+                  onChange={this.onChange}
+                  autoComplete="current-password"
+                />
+                <Button
+                  type="submit"
+                  fullWidth
+                  variant="contained"
+                  color="primary"
+                  className={classes.submit}
+                >
+                  Sign In
+                </Button>
+              </form>
+              <div className="mt-3">
+                <GoogleButton onClick={() => this.socialLogin('google')} />
+              </div>
+            </div>
+            <Box mt={8}>
+              <Copyright />
+            </Box>
+          </CardContent>
+        </Card>
       </Container>
     );
   }
@@ -134,4 +140,4 @@ const CustomLoginPage = props => (
 export default connect(
   undefined,
   { userLogin }
-)(CustomLoginPage);
+)(CustomLoginPageView);

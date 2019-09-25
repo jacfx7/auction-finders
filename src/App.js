@@ -8,7 +8,7 @@ import './App.css';
 import { FirebaseConfig } from './config/keys';
 import { PostList, PostShow, PostCreate, PostEdit } from './models/posts';
 import { UserList, UserShow, UserCreate, UserEdit } from './models/users';
-import CustomLoginPage from './template/CustomLoginPage';
+import CustomLoginPageView from './template/CustomLoginPage';
 import { AuthProvider } from './auth/AuthProvider';
 import { ProfileEdit } from './models/profile';
 //import CustomLayout from './template/CustomLayout';
@@ -28,7 +28,7 @@ class App extends Component {
   render() {
     return (
       <Admin
-        loginPage={CustomLoginPage}
+        loginPage={CustomLoginPageView}
         dataProvider={dataProvider}
         authProvider={authProvider}
         customRoutes={[<Route key="my-profile" path="/my-profile" component={ProfileEdit} />]}
