@@ -1,3 +1,7 @@
+deploy:
+    provider: firebase
+    edge:
+        branch: master
 language: node_js
 node_js:
     - "12"
