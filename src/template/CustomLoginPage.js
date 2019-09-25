@@ -1,6 +1,6 @@
 // LoginPage.js
 import React, { Component } from 'react';
-import { Login } from 'react-admin';
+//import { Login } from 'react-admin';
 import { connect } from 'react-redux';
 import { userLogin } from 'react-admin';
 import Button from '@material-ui/core/Button';
@@ -133,9 +133,9 @@ class CustomLoginPageView extends Component {
   }
 }
 
-const CustomLoginPage = props => (
+/* const CustomLoginPage = props => (
   <Login loginForm={<CustomLoginPageView {...props} />} {...props} />
-);
+); */
 
 export default connect(
   undefined,
