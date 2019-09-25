@@ -1,10 +1,7 @@
 import app from 'firebase/app';
 import 'firebase/auth';
-//import 'firebase/database';
 import 'firebase/firestore';
 import { AUTH_LOGIN, AUTH_LOGOUT, AUTH_ERROR, AUTH_CHECK, AUTH_GET_PERMISSIONS } from 'react-admin';
-import { FirebaseDataProvider } from 'react-admin-firebase';
-import { config } from 'rxjs';
 
 class AuthClient {
   constructor(firebaseConfig, options) {
@@ -17,31 +14,45 @@ class AuthClient {
     this.googleProvider = new app.auth.GoogleAuthProvider();
     this.facebookProvider = new app.auth.FacebookAuthProvider();
     this.twitterProvider = new app.auth.TwitterAuthProvider();
+    this.githubProvider = new app.auth.GithubAuthProvider();
   }
 
   async HandleAuthLogin(params) {
     const { username, password, mode } = params;
-    debugger;
+
     try {
       let login;
 
       switch (mode) {
         case 'facebook':
-          login = await this.auth.signInWithPopup(this.facebookProvider);
+          await this.auth.signInWithPopup(this.googleProvider).then(facebookUser => {
+            login = this.mergeUserDbUser(facebookUser.user);
+          });
           break;
         case 'google':
-          login = await this.auth.signInWithPopup(this.googleProvider);
+          await this.auth.signInWithPopup(this.googleProvider).then(googleUser => {
+            login = this.mergeUserDbUser(googleUser.user);
+          });
           break;
         case 'twitter':
-          login = await this.auth.signInWithPopup(this.twitterProvider);
+          await this.auth.signInWithPopup(this.googleProvider).then(twitterUser => {
+            login = this.mergeUserDbUser(twitterUser.user);
+          });
+          break;
+        case 'github':
+          await this.auth.signInWithPopup(this.githubProvider).then(githubUser => {
+            login = this.mergeUserDbUser(githubUser.user);
+          });
           break;
         default:
-          login = await this.auth.signInWithEmailAndPassword(username, password);
+          await this.auth.signInWithEmailAndPassword(username, password).then(authUser => {
+            login = this.mergeUserDbUser(authUser.user);
+          });
           break;
       }
+      //await this.updateUserLastLogin(login.user);
 
-      debugger;
-      return await this.mergeUserDbUser(login.user);
+      return await this.mergeUserDbUser(login);
     } catch (e) {
       throw new Error('Login error: invalid credentials');
     }
@@ -99,23 +110,30 @@ class AuthClient {
   }
 
   async createDbUser(user) {
-    return this.user(user.uid).set(
-      {
-        username: user.email,
-        email: user.email,
-        createDate: new Date(Date.now()),
-        lastLoginDate: new Date(Date.now()),
-        permissions: 'user'
-      },
-      { merge: true }
-    );
+    try {
+      return this.user(user.uid).set(
+        {
+          username: user.email,
+          email: user.email,
+          name: user.displayName ? user.displayName : '',
+          createDate: new Date(Date.now()),
+          lastLoginDate: new Date(Date.now()),
+          permissions: 'user',
+          roles: {
+            USER: 'user'
+          }
+        },
+        { merge: true }
+      );
+    } catch (e) {
+      console.log(e);
+    }
   }
 
   async mergeUserDbUser(user) {
-    this.user(user.uid)
+    return this.user(user.uid)
       .get()
       .then(async snapshot => {
-        debugger;
         let dbUser = snapshot.data();
 
         if (!dbUser) {
@@ -135,21 +153,23 @@ class AuthClient {
           ...dbUser
         };
 
-        await this.updateUserLastLogin(user);
-
         return user;
       });
   }
 
   async updateUserLastLogin(authUser) {
-    const createdDate = authUser.createDate ? authUser.createDate : new Date(Date.now);
-    this.user(authUser.uid).set(
-      {
-        createDate: createdDate,
-        lastLoginDate: new Date(Date.now())
-      },
-      { merge: true }
-    );
+    const createdDate = authUser.createDate ? authUser.createDate : new Date(Date.now());
+    try {
+      return await this.user(authUser.uid).set(
+        {
+          createDate: createdDate,
+          lastLoginDate: new Date(Date.now())
+        },
+        { merge: true }
+      );
+    } catch (e) {
+      console.log(e);
+    }
   }
 
   async HandleGetCurrent() {

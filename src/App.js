@@ -8,7 +8,7 @@ import './App.css';
 import { FirebaseConfig } from './config/keys';
 import { PostList, PostShow, PostCreate, PostEdit } from './models/posts';
 import { UserList, UserShow, UserCreate, UserEdit } from './models/users';
-import CustomLoginPage from './CustomLoginPage';
+import CustomLoginPage from './template/CustomLoginPage';
 import { AuthProvider } from './auth/AuthProvider';
 import { ProfileEdit } from './models/profile';
 import CustomLayout from './template/CustomLayout';
