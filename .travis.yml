@@ -1,9 +1,3 @@
-deploy:
-  provider: firebase
-  token:
-    secure: '1//0fI75lRkxylozCgYIARAAGA8SNwF-L9IrMK8Fw5kv-Uyk_-rGnpaAAk-S5RDmHfnE7jrZZAVeXxLvh2z-STRIHdx7z0gCSzQSVKk'
-  edge:
-    branch: master
 language: node_js
 node_js:
   - '12'
@@ -14,5 +8,10 @@ install:
 script:
   - npm test
   - npm run build
-after_success:
-  - firebase deploy --only hosting:admin-app --token $FIREBASE_TOKEN
+deploy:
+  provider: firebase
+  token:
+    secure: '1//0fI75lRkxylozCgYIARAAGA8SNwF-L9IrMK8Fw5kv-Uyk_-rGnpaAAk-S5RDmHfnE7jrZZAVeXxLvh2z-STRIHdx7z0gCSzQSVKk'
+  edge:
+    branch: master
+  only: 'hosting:admin-app'

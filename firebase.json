@@ -1,6 +1,7 @@
 {
   "hosting": {
     "public": "build",
+    "project": "auction-finders-dev",
     "target": "admin-app",
     "ignore": ["firebase.json", "**/.*", "**/node_modules/**"],
     "rewrites": [
