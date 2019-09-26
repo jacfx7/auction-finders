@@ -15,4 +15,4 @@ script:
   - npm test
   - npm run build
 after_success:
-  - firebase deploy --only hosting:admin-auction-finders-dev --token $FIREBASE_TOKEN
+  - firebase deploy --only hosting:admin-app --token $FIREBASE_TOKEN

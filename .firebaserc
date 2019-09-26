@@ -1,5 +1,14 @@
 {
   "projects": {
     "default": "admin-auction-finders-dev"
+  },
+  "targets": {
+    "auction-finders-dev": {
+      "hosting": {
+        "admin-app": [
+          "admin-auction-finders-dev"
+        ]
+      }
+    }
   }
 }
