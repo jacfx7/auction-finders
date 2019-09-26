@@ -1,6 +1,6 @@
 {
   "projects": {
-    "default": "admin-auction-finders-dev"
+    "default": "auction-finders-dev"
   },
   "targets": {
     "auction-finders-dev": {
