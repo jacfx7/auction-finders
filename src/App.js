@@ -11,14 +11,12 @@ import { UserList, UserShow, UserCreate, UserEdit } from './models/users';
 import CustomLoginPageView from './template/CustomLoginPage';
 import { AuthProvider } from './auth/AuthProvider';
 import { ProfileEdit } from './models/profile';
-//import CustomLayout from './template/CustomLayout';
+import auctions from './models/auctions';
+import auctionItems from './models/auctionItems';
 
 const options = {
-  logging: true
-  //rootRef: "auction-finders-dev/users"
-  // app: firebaseAppInstance
-  // watch: ['posts'];
-  // dontwatch: ['comments'];
+  logging: true,
+  watch: ['auctions', 'auctionItems']
 };
 
 const dataProvider = FirebaseDataProvider(FirebaseConfig, options);
@@ -34,13 +32,9 @@ class App extends Component {
         customRoutes={[<Route key="my-profile" path="/my-profile" component={ProfileEdit} />]}
       >
         {permissions => [
-          <Resource
-            name="posts"
-            list={PostList}
-            show={PostShow}
-            create={PostCreate}
-            edit={PostEdit}
-          />,
+          <Resource name="auctions" {...auctions} />,
+          <Resource name="auctionItems" {...auctionItems} />,
+          <Resource name="addresses" />,
           permissions === 'admin' ? (
             <Resource
               name="users"
