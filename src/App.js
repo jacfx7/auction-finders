@@ -6,7 +6,6 @@ import { Route } from 'react-router-dom';
 
 import './App.css';
 import { FirebaseConfig } from './config/keys';
-import { PostList, PostShow, PostCreate, PostEdit } from './models/posts';
 import { UserList, UserShow, UserCreate, UserEdit } from './models/users';
 import CustomLoginPageView from './template/CustomLoginPage';
 import { AuthProvider } from './auth/AuthProvider';

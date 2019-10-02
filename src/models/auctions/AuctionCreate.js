@@ -1,6 +1,5 @@
 import React from 'react';
 import { Create, DateTimeInput, LongTextInput, SimpleForm, required } from 'react-admin';
-import { parse } from 'query-string';
 
 const today = new Date();
 
