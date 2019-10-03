@@ -1,16 +1,6 @@
 import React from 'react';
 import { withStyles } from '@material-ui/core/styles';
-import {
-  Datagrid,
-  List,
-  Filter,
-  DateField,
-  TextField,
-  TextInput,
-  ShowButton,
-  EditButton,
-  DeleteButton
-} from 'react-admin';
+import { Datagrid, List, Filter, TextField, TextInput, ShowButton, EditButton } from 'react-admin';
 
 const styles = theme => ({
   title: {
