@@ -186,12 +186,21 @@ class AuthClient {
     try {
       return this.getUserLogin().then(user => {
         if (user.roles['ADMIN']) {
-          return 'admin';
+          return {
+            email: user.email,
+            role: 'admin'
+          };
         }
         if (user.roles['SUPER']) {
-          return 'super';
+          return {
+            email: user.email,
+            role: 'super'
+          };
         }
-        return 'user';
+        return {
+          email: user.email,
+          role: 'user'
+        };
       });
     } catch (e) {
       return null;

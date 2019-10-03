@@ -19,26 +19,32 @@ const styles = theme => ({
   }
 });
 
-const AuctionList = withStyles(styles)(({ classes, ...props }) => (
-  <List {...props} sort={{ field: 'auctionDate', order: 'DESC' }}>
-    <Responsive
-      small={
-        <SimpleList
-          linkType="show"
-          primaryText={rec => rec.description}
-          tertiaryText={record => new Date(record.date).toLocaleDateString()}
-        />
-      }
-      medium={
-        <Datagrid>
-          <TextField source="id" />
-          <TextField source="description" cellClassName={classes.title} />
-          <DateField source="date" showTime />
-          <ShowButton />
-        </Datagrid>
-      }
-    />
-  </List>
-));
+const AuctionList = withStyles(styles)(({ permissions, classes, ...props }) => {
+  return (
+    <List
+      {...props}
+      sort={{ field: 'auctionDate', order: 'DESC' }}
+      filter={{ createdby: permissions ? permissions.email : 'admin123' }}
+    >
+      <Responsive
+        small={
+          <SimpleList
+            linkType="show"
+            primaryText={rec => rec.description}
+            tertiaryText={record => new Date(record.date).toLocaleDateString()}
+          />
+        }
+        medium={
+          <Datagrid>
+            <TextField source="id" />
+            <TextField source="description" cellClassName={classes.title} />
+            <DateField source="date" showTime />
+            <ShowButton />
+          </Datagrid>
+        }
+      />
+    </List>
+  );
+});
 
 export default AuctionList;

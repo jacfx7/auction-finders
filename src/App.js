@@ -15,7 +15,7 @@ import auctionItems from './models/auctionItems';
 
 const options = {
   logging: true,
-  watch: ['auctions', 'auctionItems']
+  watch: ['auctions', 'auctionItems', 'users']
 };
 
 const dataProvider = FirebaseDataProvider(FirebaseConfig, options);
@@ -31,10 +31,10 @@ class App extends Component {
         customRoutes={[<Route key="my-profile" path="/my-profile" component={ProfileEdit} />]}
       >
         {permissions => [
-          <Resource name="auctions" {...auctions} />,
+          <Resource name="auctions" {...auctions} permissions={permissions} />,
           <Resource name="auctionItems" {...auctionItems} />,
           <Resource name="addresses" />,
-          permissions === 'admin' ? (
+          permissions.role === 'admin' ? (
             <Resource
               name="users"
               icon={UserIcon}
