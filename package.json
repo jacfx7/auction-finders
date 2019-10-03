@@ -36,6 +36,29 @@
   "eslintConfig": {
     "extends": "react-app"
   },
+  "jest": {
+    "setupFilesAfterEnv": [
+      "<rootDir>src/tools/testSetup.js"
+    ],
+    "moduleNameMapper": {
+      "\\.(jpg|jpeg|png|gif|eot|otf|webp|svg|ttf|woff|woff2|mp4|webm|wav|mp3|m4a|aac|oga)$": "<rootDir>/tools/fileMock.js",
+      "\\.(css|less)$": "<rootDir>/src/tools/styleMock.js"
+    },
+    "snapshotSerializers": [
+      "enzyme-to-json/serializer"
+    ],
+    "collectCoverageFrom": [
+      "src/**/*.js",
+      "!src/index.js",
+      "!src/tools/*.js",
+      "!src/config/*.js",
+      "!src/store/*.js",
+      "!src/constants/*.js"
+    ],
+    "coverageReporters": [
+      "text"
+    ]
+  },
   "browserslist": {
     "production": [
       ">0.2%",
@@ -47,5 +70,9 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
+  },
+  "devDependencies": {
+    "enzyme": "^3.10.0",
+    "enzyme-adapter-react-16": "^1.14.0"
   }
 }

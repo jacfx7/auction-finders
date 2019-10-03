@@ -20,11 +20,16 @@ const styles = theme => ({
 });
 
 const AuctionList = withStyles(styles)(({ permissions, classes, ...props }) => {
+  let filterBy = 'admin123';
+  if (permissions) {
+    filterBy = permissions.role === 'admin' ? '' : permissions.email;
+  }
+
   return (
     <List
       {...props}
       sort={{ field: 'auctionDate', order: 'DESC' }}
-      filter={{ createdby: permissions ? permissions.email : 'admin123' }}
+      filter={{ createdby: filterBy }}
     >
       <Responsive
         small={

@@ -7,9 +7,32 @@ import {
   Show,
   Tab,
   TabbedShowLayout,
-  TextField
+  TextField,
+  Button,
+  Link
 } from 'react-admin';
+import EditIcon from '@material-ui/icons/Edit';
 import AddItemButton from './AddItemButton';
+import { withStyles } from '@material-ui/core/styles';
+
+const styles = {
+  button: {
+    marginTop: '1em'
+  }
+};
+
+const EditAuctionButton = withStyles(styles)(({ classes, record }) => (
+  <Button
+    className={classes.button}
+    color="primary"
+    component={Link}
+    to={`/auctions/${record.id}`}
+    label="Edit"
+    title="Edit"
+  >
+    <EditIcon />
+  </Button>
+));
 
 const AuctionShow = props => (
   <Show {...props}>
@@ -30,6 +53,7 @@ const AuctionShow = props => (
           }}
         />
         <TextField lable="Description" source="description" />
+        <EditAuctionButton />
       </Tab>
       <Tab label="Items" path="items">
         <ReferenceManyField

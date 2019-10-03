@@ -1,17 +1,17 @@
 import React, { Component } from 'react';
 import { Admin, Resource } from 'react-admin';
 import { FirebaseDataProvider } from 'react-admin-firebase';
-import UserIcon from '@material-ui/icons/People';
 import { Route } from 'react-router-dom';
 
 import './App.css';
 import { FirebaseConfig } from './config/keys';
-import { UserList, UserShow, UserCreate, UserEdit } from './models/users';
+import users from './components/users';
 import CustomLoginPageView from './template/CustomLoginPage';
 import { AuthProvider } from './auth/AuthProvider';
-import { ProfileEdit } from './models/profile';
-import auctions from './models/auctions';
-import auctionItems from './models/auctionItems';
+import { ProfileEdit } from './components/profile';
+import auctions from './components/auctions';
+import auctionItems from './components/auctionItems';
+import auctionHouse from './components/auctionHouse';
 
 const options = {
   logging: true,
@@ -34,14 +34,15 @@ class App extends Component {
           <Resource name="auctions" {...auctions} permissions={permissions} />,
           <Resource name="auctionItems" {...auctionItems} />,
           <Resource name="addresses" />,
-          permissions.role === 'admin' ? (
+          (permissions && permissions.role) === 'admin' ? (
+            <Resource name="users" {...users} permissions={permissions} />
+          ) : null,
+          (permissions && permissions.role) === 'admin' ? (
             <Resource
-              name="users"
-              icon={UserIcon}
-              list={UserList}
-              show={UserShow}
-              create={UserCreate}
-              edit={UserEdit}
+              name="auctionHouses"
+              options={{ label: 'Auction Houses' }}
+              {...auctionHouse}
+              permissions={permissions}
             />
           ) : null
         ]}

@@ -61,7 +61,6 @@ class CustomLoginPageView extends Component {
     e.preventDefault();
     // gather your data/credentials here
     const { email, password } = this.state;
-    debugger;
     this.props.userLogin({ username: email, password: password, mode: 'email' });
   };
 

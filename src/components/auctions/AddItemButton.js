@@ -13,7 +13,7 @@ const styles = {
 const AddItemButton = ({ classes, record }) => (
   <Button
     className={classes.button}
-    variant="raised"
+    color="primary"
     component={Link}
     to={`/auctionItems/create?auction_id=${record.id}`}
     label="Add an item"
