@@ -66,7 +66,7 @@ class AuthClient {
 
   async HandleAuthCheck(params) {
     try {
-      await this.getUserLogin();
+      return await this.getUserLogin();
       //const user = await this.getUserLogin();
     } catch (e) {
       throw new Error('Auth check error: ' + e);
@@ -96,11 +96,12 @@ class AuthClient {
                 email: authUser.email,
                 emailVerified: authUser.emailVerified,
                 providerData: authUser.providerData,
+                name: authUser.displayName,
+                picture: authUser.photoURL,
                 ...dbUser
               };
 
               await this.updateUserLastLogin(authUser);
-
               resolve(authUser);
             });
         } else {
@@ -153,7 +154,7 @@ class AuthClient {
           providerData: user.providerData,
           ...dbUser
         };
-
+        localStorage.setItem('my-profile', user);
         return user;
       });
   }

@@ -1,8 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-//import Typography from '@material-ui/core/Typography';
-import { crudGetOne, UserMenu, MenuItemLink } from 'react-admin';
-import SettingsIcon from '@material-ui/icons/Settings';
+import { crudGetOne, UserMenu } from 'react-admin';
 
 class CustomUserMenuView extends Component {
   componentDidMount() {
@@ -16,11 +14,14 @@ class CustomUserMenuView extends Component {
   render() {
     const { crudGetOne, profile, ...props } = this.props;
 
-    return (
-      <UserMenu label={profile ? profile.nickname : ''} {...props}>
-        <MenuItemLink to="/my-profile" primaryText="My profile" leftIcon={<SettingsIcon />} />
-      </UserMenu>
-    );
+    const icon =
+      profile && profile.picture ? (
+        <img src={profile.picture} alt="profile" width="48" height="48" />
+      ) : (
+        undefined
+      );
+
+    return <UserMenu label={profile ? profile.name : 'unknown'} icon={icon} {...props} />;
   }
 }
 

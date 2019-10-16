@@ -1,17 +1,16 @@
 import React, { Component } from 'react';
 import { Admin, Resource } from 'react-admin';
 import { FirebaseDataProvider } from 'react-admin-firebase';
-import { Route } from 'react-router-dom';
 
 import './App.css';
 import { FirebaseConfig } from './config/keys';
 import users from './components/users';
 import CustomLoginPageView from './template/CustomLoginPage';
 import { AuthProvider } from './auth/AuthProvider';
-import { ProfileEdit } from './components/profile';
 import auctions from './components/auctions';
 import auctionItems from './components/auctionItems';
 import auctionHouse from './components/auctionHouse';
+import Dashboard from './components/dashboard/Dashboard';
 
 const options = {
   logging: true,
@@ -25,10 +24,10 @@ class App extends Component {
   render() {
     return (
       <Admin
+        dashboard={Dashboard}
         loginPage={CustomLoginPageView}
         dataProvider={dataProvider}
         authProvider={authProvider}
-        customRoutes={[<Route key="my-profile" path="/my-profile" component={ProfileEdit} />]}
       >
         {permissions => [
           <Resource name="auctions" {...auctions} permissions={permissions} />,
