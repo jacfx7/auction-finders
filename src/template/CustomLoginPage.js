@@ -2,7 +2,7 @@
 import React, { Component } from 'react';
 //import { Login } from 'react-admin';
 import { connect } from 'react-redux';
-import { userLogin } from 'react-admin';
+import { userLogin, Notification } from 'react-admin';
 import Button from '@material-ui/core/Button';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import TextField from '@material-ui/core/TextField';
@@ -74,6 +74,7 @@ class CustomLoginPageView extends Component {
 
   render() {
     const classes = useStyles;
+    const { notifications } = this.props;
     return (
       <Container component="main" maxWidth="xs">
         <CssBaseline />
@@ -127,16 +128,25 @@ class CustomLoginPageView extends Component {
             </Box>
           </CardContent>
         </Card>
+        {notifications && <Notification {...this.props} />}
       </Container>
     );
   }
 }
 
-/* const CustomLoginPage = props => (
-  <Login loginForm={<CustomLoginPageView {...props} />} {...props} />
-); */
+const mapStateToProps = state => {
+  const notifications = state.notifications;
+  const notificationList = [];
+  for (let key in notifications) {
+    notificationList.push(notifications[key]);
+  }
+
+  return {
+    notifications: notificationList
+  };
+};
 
 export default connect(
-  undefined,
+  mapStateToProps,
   { userLogin }
 )(CustomLoginPageView);

@@ -1,12 +1,11 @@
 import React, { Component } from 'react';
-import Card from '@material-ui/core/Card';
-import CardContent from '@material-ui/core/CardContent';
-import { Title } from 'react-admin';
 import { connect } from 'react-redux';
 import { crudGetAll } from 'react-admin';
-import NewAuctions from './NewAuctions';
 import { MuiThemeProvider } from 'material-ui/styles';
+
+import NewAuctions from './NewAuctions';
 import UpcomingAuctions from './UpcomingAuctions';
+import ItemList from './ItemList';
 
 const styles = {
   welcome: { marginBottom: '2em' },
@@ -19,28 +18,61 @@ const styles = {
 class DashBoardView extends Component {
   componentDidMount() {
     this.fetchAuctions();
+    this.fetchAuctionItems();
   }
 
   fetchAuctions = () => {
     this.props.crudGetAll('auctions', {}, {}, 5000);
   };
 
+  fetchAuctionItems = () => {
+    this.props.crudGetAll('auctionItems', {}, {}, 5000);
+  };
+
   render() {
     const thirtyDaysAgo = new Date();
     const thirtyDaysFuture = new Date();
+    const sevenDaysFuture = new Date();
     thirtyDaysAgo.setDate(thirtyDaysAgo.getDate() - 30);
     thirtyDaysFuture.setDate(thirtyDaysFuture.getDate() + 30);
-    const { auctions } = this.props;
+    sevenDaysFuture.setDate(sevenDaysFuture.getDate() + 7);
+    const { auctions, auctionItems, permissions } = this.props;
     let newAuctionCnt = 0;
-    let upcomingAuctionCnt = 0;
-    if (auctions) {
-      auctions.map(a => {
+    let thirtyDayAuctionCnt = 0;
+    let sevenDayAuctionCnt = 0;
+
+    const upcomingItems = [];
+    let auctionList = auctions.filter(a => permissions && a.createdby === permissions.email);
+    if (permissions && permissions.role === 'admin') {
+      auctionList = auctions;
+    }
+    const sevenDayAuctionList = [];
+
+    if (auctionList) {
+      auctionList.map(a => {
         if (a.createdate > thirtyDaysAgo) {
           newAuctionCnt++;
         }
-        debugger;
         if (a.date > Date.now() && a.date < thirtyDaysFuture) {
-          upcomingAuctionCnt++;
+          thirtyDayAuctionCnt++;
+          const f = auctionItems.filter(i => i.auction_id === a.id);
+          console.log('auctionId:', a.id);
+
+          if (f) {
+            f.map(r =>
+              upcomingItems.push({
+                auctionId: a.id,
+                auctionTitle: a.description,
+                itemId: r.id,
+                itemTitle: r.title,
+                itemDescription: r.description
+              })
+            );
+          }
+        }
+        if (a.date > Date.now() && a.date < sevenDaysFuture) {
+          sevenDayAuctionCnt++;
+          sevenDayAuctionList.push(a);
         }
         return newAuctionCnt;
       });
@@ -52,12 +84,27 @@ class DashBoardView extends Component {
           <div style={styles.leftCol}>
             <div style={styles.flex}>
               <NewAuctions value={newAuctionCnt} />
-              <UpcomingAuctions value={upcomingAuctionCnt} />
+              <UpcomingAuctions
+                value={thirtyDayAuctionCnt}
+                title={'Auctions Happening in the Next 30 Days'}
+              />
             </div>
-            <div style={styles.singleCol}></div>
+            <div style={styles.singleCol}>
+              <UpcomingAuctions
+                value={sevenDayAuctionCnt}
+                title={'Auctions Happening in the Next 7 Days'}
+                auctionList={sevenDayAuctionList}
+              />
+            </div>
           </div>
           <div style={styles.rightCol}>
-            <div style={styles.flex}></div>
+            <div style={styles.flex}>
+              <ItemList
+                items={upcomingItems}
+                nb={upcomingItems.length}
+                title={'Items on Auctions in the Next 30 Days'}
+              />
+            </div>
           </div>
         </div>
       </MuiThemeProvider>
@@ -68,13 +115,21 @@ class DashBoardView extends Component {
 const mapStateToProps = (state, props) => {
   const id = 'auctions';
   const auctions = state.admin.resources[id];
-  console.log('map', state.admin.resources[id]);
   const auctionList = [];
   for (let key in auctions.data) {
     auctionList.push(auctions.data[key]);
   }
+
+  const itemsId = 'auctionItems';
+  const items = state.admin.resources[itemsId];
+  const itemList = [];
+  for (let key in items.data) {
+    itemList.push(items.data[key]);
+  }
   return {
-    auctions: auctionList
+    auctions: auctionList,
+    auctionItems: itemList,
+    permissions: props.permissions
   };
 };
 
@@ -82,4 +137,5 @@ const Dashboard = connect(
   mapStateToProps,
   { crudGetAll }
 )(DashBoardView);
+
 export default Dashboard;

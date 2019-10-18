@@ -46,15 +46,17 @@ class AuthClient {
           break;
         default:
           await this.auth.signInWithEmailAndPassword(username, password).then(authUser => {
+            debugger;
             login = this.mergeUserDbUser(authUser.user);
           });
           break;
       }
-      //await this.updateUserLastLogin(login.user);
+      // await this.updateUserLastLogin(login.user);
 
       return await this.mergeUserDbUser(login);
     } catch (e) {
-      throw new Error('Login error: invalid credentials');
+      debugger;
+      throw new Error(e.message);
     }
   }
 
@@ -67,7 +69,6 @@ class AuthClient {
   async HandleAuthCheck(params) {
     try {
       return await this.getUserLogin();
-      //const user = await this.getUserLogin();
     } catch (e) {
       throw new Error('Auth check error: ' + e);
     }
