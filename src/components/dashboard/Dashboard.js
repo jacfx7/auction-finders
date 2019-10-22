@@ -56,7 +56,6 @@ class DashBoardView extends Component {
         if (a.date > Date.now() && a.date < thirtyDaysFuture) {
           thirtyDayAuctionCnt++;
           const f = auctionItems.filter(i => i.auction_id === a.id);
-          console.log('auctionId:', a.id);
 
           if (f) {
             f.map(r =>

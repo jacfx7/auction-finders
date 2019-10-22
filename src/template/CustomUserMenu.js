@@ -1,19 +1,15 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { crudGetOne, UserMenu } from 'react-admin';
+import { crudGetAll, UserMenu } from 'react-admin';
 
 class CustomUserMenuView extends Component {
   componentDidMount() {
-    this.fetchProfile();
+    //this.fetchProfile();
   }
 
-  fetchProfile = () => {
-    this.props.crudGetOne('profile', 'my-profile', '/my-profile', false);
-  };
-
   render() {
-    const { crudGetOne, profile, ...props } = this.props;
-
+    const { crudGetAll, permissions, profile, ...props } = this.props;
+    console.log('profile:', profile);
     const icon =
       profile && profile.picture ? (
         <img src={profile.picture} alt="profile" width="48" height="48" />
@@ -25,9 +21,10 @@ class CustomUserMenuView extends Component {
   }
 }
 
-const mapStateToProps = state => {
-  const resource = 'profile';
-  const id = 'my-profile';
+const mapStateToProps = (state, props) => {
+  const resource = 'users';
+  const id = props.permissions ? props.permissions.userId : '';
+  console.log('userid:', props);
   const profileState = state.admin.resources[resource];
 
   return {
@@ -37,6 +34,6 @@ const mapStateToProps = state => {
 
 const CustomUserMenu = connect(
   mapStateToProps,
-  { crudGetOne }
+  { crudGetAll }
 )(CustomUserMenuView);
 export default CustomUserMenu;

@@ -1,4 +1,5 @@
-import * as React from "react";
+import React, { Component } from 'react';
+import { connect } from 'react-redux';
 import {
   Edit,
   DisabledInput,
@@ -7,30 +8,43 @@ import {
   ReferenceInput,
   SelectInput,
   required
-} from "react-admin";
+} from 'react-admin';
 
-export const UserEdit = props => {
-  console.log("Props:", props);
-  return (
-    <Edit {...props}>
-      <SimpleForm>
-        <DisabledInput source="id" />
-        <ReferenceInput source="userTypeId" reference="userTypes" allowEmpty validate={required()}>
-          <SelectInput optionText="name" />
-        </ReferenceInput>
-        <DisabledInput source="createdate" />
-        <DisabledInput source="lastupdate" />
-        <TextInput source="name" />
-        <TextInput source="email" />
-        <AuctioneerFields {...props} />
-      </SimpleForm>
-    </Edit>
-  );
+import { AuctioneerFields } from './UserFields';
+
+class UserEditView extends Component {
+  render() {
+    const { hasCreate, hasShow, ...rest } = this.props;
+    return (
+      <Edit {...this.props}>
+        <SimpleForm>
+          <DisabledInput source="id" />
+          <ReferenceInput
+            source="userTypeId"
+            reference="userTypes"
+            allowEmpty
+            validate={required()}
+          >
+            <SelectInput optionText="name" />
+          </ReferenceInput>
+          <DisabledInput source="createdate" />
+          <DisabledInput source="lastupdate" />
+          <TextInput source="name" validate={required()} />
+          <TextInput source="email" validate={required()} />
+          <AuctioneerFields {...rest} />
+        </SimpleForm>
+      </Edit>
+    );
+  }
+}
+
+const mapStateToProps = state => {
+  const formField = state.form['record-form']
+    ? state.form['record-form'].values
+    : { userTypeId: '0' };
+  return { userType: formField.userTypeId };
 };
 
-export default UserEdit;
+const UserEdit = connect(mapStateToProps)(UserEditView);
 
-const AuctioneerFields = ({ record, ...rest }) =>
-  record && record.userTypeId === "Sq3wCWFRvfQH5E0OVKFE" ? (
-    <TextInput source="licenseNumber" record={record} {...rest} />
-  ) : null;
+export default UserEdit;

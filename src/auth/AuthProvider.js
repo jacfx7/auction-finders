@@ -46,7 +46,6 @@ class AuthClient {
           break;
         default:
           await this.auth.signInWithEmailAndPassword(username, password).then(authUser => {
-            debugger;
             login = this.mergeUserDbUser(authUser.user);
           });
           break;
@@ -55,7 +54,6 @@ class AuthClient {
 
       return await this.mergeUserDbUser(login);
     } catch (e) {
-      debugger;
       throw new Error(e.message);
     }
   }
@@ -122,6 +120,7 @@ class AuthClient {
           createDate: new Date(Date.now()),
           lastLoginDate: new Date(Date.now()),
           permissions: 'user',
+          picture: user.photoURL,
           roles: {
             USER: 'user'
           }
@@ -153,9 +152,10 @@ class AuthClient {
           email: user.email,
           emailVerified: user.emailVerified,
           providerData: user.providerData,
+          picture: user.photoURL,
           ...dbUser
         };
-        localStorage.setItem('my-profile', user);
+        //localStorage.setItem('my-profile', user);
         return user;
       });
   }
@@ -166,7 +166,8 @@ class AuthClient {
       return await this.user(authUser.uid).set(
         {
           createDate: createdDate,
-          lastLoginDate: new Date(Date.now())
+          lastLoginDate: new Date(Date.now()),
+          picture: authUser.picture ? authUser.picture : ''
         },
         { merge: true }
       );
@@ -190,18 +191,21 @@ class AuthClient {
         if (user.roles['ADMIN']) {
           return {
             email: user.email,
-            role: 'admin'
+            role: 'admin',
+            userId: user.uid
           };
         }
         if (user.roles['SUPER']) {
           return {
             email: user.email,
-            role: 'super'
+            role: 'super',
+            userId: user.uid
           };
         }
         return {
           email: user.email,
-          role: 'user'
+          role: 'user',
+          userId: user.uid
         };
       });
     } catch (e) {
