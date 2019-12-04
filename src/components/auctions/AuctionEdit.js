@@ -1,4 +1,4 @@
-import React from 'react';
+import React from "react";
 import {
   Edit,
   DateTimeInput,
@@ -6,13 +6,14 @@ import {
   SimpleForm,
   required,
   DisabledInput
-} from 'react-admin';
+} from "react-admin";
+import { AuctionTitle } from "./AuctionCommon";
 
 const today = new Date();
 
 const AuctionEdit = props => {
   return (
-    <Edit {...props}>
+    <Edit title={<AuctionTitle />} {...props}>
       <SimpleForm defaultValue={{ date: today }}>
         <DisabledInput label="Id" source="id" />
         <DateTimeInput source="date" validate={required()} />

@@ -1,5 +1,5 @@
-import { withStyles } from '@material-ui/core/styles';
-import React from 'react';
+import { withStyles } from "@material-ui/core/styles";
+import React from "react";
 import {
   Datagrid,
   List,
@@ -7,28 +7,30 @@ import {
   ShowButton,
   SimpleList,
   TextField,
-  DateField
-} from 'react-admin';
+  DateField,
+  ReferenceManyField
+} from "react-admin";
+import { ItemCount } from "../common";
 
 const styles = theme => ({
   title: {
-    maxWidth: '20em',
-    overflow: 'hidden',
-    textOverflow: 'ellipsis',
-    whiteSpace: 'nowrap'
+    maxWidth: "20em",
+    overflow: "hidden",
+    textOverflow: "ellipsis",
+    whiteSpace: "nowrap"
   }
 });
 
 const AuctionList = withStyles(styles)(({ permissions, classes, ...props }) => {
-  let filterBy = 'admin123';
+  let filterBy = "admin123";
   if (permissions) {
-    filterBy = permissions.role === 'admin' ? '' : permissions.email;
+    filterBy = permissions.role === "admin" ? "" : permissions.email;
   }
 
   return (
     <List
       {...props}
-      sort={{ field: 'auctionDate', order: 'DESC' }}
+      sort={{ field: "auctionDate", order: "DESC" }}
       filter={{ createdby: filterBy }}
     >
       <Responsive
@@ -44,6 +46,13 @@ const AuctionList = withStyles(styles)(({ permissions, classes, ...props }) => {
             <TextField source="id" />
             <TextField source="description" cellClassName={classes.title} />
             <DateField source="date" showTime />
+            <ReferenceManyField
+              label="Items"
+              reference="auctionItems"
+              target="auction_id"
+            >
+              <ItemCount {...props} />
+            </ReferenceManyField>
             <ShowButton />
           </Datagrid>
         }

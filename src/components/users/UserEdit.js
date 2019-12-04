@@ -1,5 +1,5 @@
-import React, { Component } from 'react';
-import { connect } from 'react-redux';
+import React, { Component } from "react";
+import { connect } from "react-redux";
 import {
   Edit,
   DisabledInput,
@@ -8,15 +8,15 @@ import {
   ReferenceInput,
   SelectInput,
   required
-} from 'react-admin';
+} from "react-admin";
 
-import { AuctioneerFields } from './UserFields';
+import { AuctioneerFields, UserTitle } from "./UserCommon";
 
 class UserEditView extends Component {
   render() {
     const { hasCreate, hasShow, ...rest } = this.props;
     return (
-      <Edit {...this.props}>
+      <Edit title={<UserTitle />} {...this.props}>
         <SimpleForm>
           <DisabledInput source="id" />
           <ReferenceInput
@@ -39,9 +39,9 @@ class UserEditView extends Component {
 }
 
 const mapStateToProps = state => {
-  const formField = state.form['record-form']
-    ? state.form['record-form'].values
-    : { userTypeId: '0' };
+  const formField = state.form["record-form"]
+    ? state.form["record-form"].values
+    : { userTypeId: "0" };
   return { userType: formField.userTypeId };
 };
 

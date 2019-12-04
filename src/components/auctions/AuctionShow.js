@@ -1,4 +1,4 @@
-import React from 'react';
+import React from "react";
 import {
   Datagrid,
   DateField,
@@ -7,35 +7,14 @@ import {
   Show,
   Tab,
   TabbedShowLayout,
-  TextField,
-  Button,
-  Link
-} from 'react-admin';
-import EditIcon from '@material-ui/icons/Edit';
-import AddItemButton from './AddItemButton';
-import { withStyles } from '@material-ui/core/styles';
+  TextField
+} from "react-admin";
 
-const styles = {
-  button: {
-    marginTop: '1em'
-  }
-};
-
-const EditAuctionButton = withStyles(styles)(({ classes, record }) => (
-  <Button
-    className={classes.button}
-    color="primary"
-    component={Link}
-    to={`/auctions/${record.id}`}
-    label="Edit"
-    title="Edit"
-  >
-    <EditIcon />
-  </Button>
-));
+import { AuctionTitle, EditAuctionButton } from "./AuctionCommon";
+import AddItemButton from "./AddItemButton";
 
 const AuctionShow = props => (
-  <Show {...props}>
+  <Show title={<AuctionTitle />} {...props}>
     <TabbedShowLayout>
       <Tab label="Summary">
         <TextField label="Auction Id" source="id" />
@@ -44,12 +23,12 @@ const AuctionShow = props => (
           source="date"
           showTime
           options={{
-            weekday: 'long',
-            year: 'numeric',
-            month: 'long',
-            day: 'numeric',
-            hour: 'numeric',
-            minute: 'numeric'
+            weekday: "long",
+            year: "numeric",
+            month: "long",
+            day: "numeric",
+            hour: "numeric",
+            minute: "numeric"
           }}
         />
         <TextField lable="Description" source="description" />
@@ -60,7 +39,7 @@ const AuctionShow = props => (
           addLabel={false}
           reference="auctionItems"
           target="auction_id"
-          sort={{ field: 'title', order: 'DESC' }}
+          sort={{ field: "title", order: "DESC" }}
         >
           <Datagrid>
             <DateField source="created_at" />

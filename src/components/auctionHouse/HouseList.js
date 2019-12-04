@@ -1,13 +1,20 @@
-import React from 'react';
-import { withStyles } from '@material-ui/core/styles';
-import { Datagrid, List, Filter, TextField, TextInput, ShowButton, EditButton } from 'react-admin';
+import React from "react";
+import { withStyles } from "@material-ui/core/styles";
+import {
+  Datagrid,
+  List,
+  Filter,
+  TextField,
+  TextInput,
+  ShowButton
+} from "react-admin";
 
 const styles = theme => ({
   title: {
-    maxWidth: '20em',
-    overflow: 'hidden',
-    textOverflow: 'ellipsis',
-    whiteSpace: 'nowrap'
+    maxWidth: "20em",
+    overflow: "hidden",
+    textOverflow: "ellipsis",
+    whiteSpace: "nowrap"
   }
 });
 
@@ -17,16 +24,17 @@ const HouseFilter = props => (
   </Filter>
 );
 
-export const HouseList = withStyles(styles)(({ permissions, classes, ...props }) => {
-  return (
-    <List {...props} filters={<HouseFilter />}>
-      <Datagrid>
-        <TextField source="name" />
-        <ShowButton label="" />
-        <EditButton label="" />
-      </Datagrid>
-    </List>
-  );
-});
+export const HouseList = withStyles(styles)(
+  ({ permissions, classes, ...props }) => {
+    return (
+      <List title="Auction Houses" {...props} filters={<HouseFilter />}>
+        <Datagrid>
+          <TextField source="name" />
+          <ShowButton />
+        </Datagrid>
+      </List>
+    );
+  }
+);
 
 export default HouseList;

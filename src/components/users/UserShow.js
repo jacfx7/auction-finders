@@ -1,8 +1,10 @@
-import * as React from 'react';
-import { Show, SimpleShowLayout, TextField } from 'react-admin';
+import * as React from "react";
+import { Show, SimpleShowLayout, TextField } from "react-admin";
+
+import { UserTitle } from "./UserCommon";
 
 export const UserShow = props => (
-  <Show {...props}>
+  <Show title={<UserTitle />} {...props}>
     <SimpleShowLayout>
       <TextField source="id" />
       <TextField source="name" />
