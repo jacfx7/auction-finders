@@ -1,24 +1,30 @@
 import React, { Component } from "react";
 import { Admin, Resource } from "react-admin";
-import { FirebaseDataProvider } from "react-admin-firebase";
+import {
+  FirebaseDataProvider,
+  FirebaseRealTimeSaga
+} from "react-admin-firebase";
 
-import "./App.css";
-import { FirebaseConfig } from "./config/keys";
-import users from "./components/users";
-import CustomLoginPageView from "./template/CustomLoginPage";
-import { AuthProvider } from "./auth/AuthProvider";
-import auctions from "./components/auctions";
-import auctionItems from "./components/auctionItems";
-import auctionHouse from "./components/auctionHouse";
-import Dashboard from "./components/dashboard/Dashboard";
-import CustomLayout from "./template/CustomLayout";
+import "@/App.css";
+import { FirebaseConfig } from "@/config/keys";
+import users from "@/components/users";
+import CustomLoginPageView from "@/template/CustomLoginPage";
+import { AuthProvider } from "@/auth/AuthProvider";
+import auctions from "@/components/auctions";
+import auctionItems from "@/components/auctionItems";
+import auctionHouse from "@/components/auctionHouse";
+import Dashboard from "@/components/dashboard/Dashboard";
+import CustomLayout from "@/template/CustomLayout";
 
 const options = {
   logging: true,
-  watch: ["auctions", "auctionItems", "users"]
+  watch: ["auctions", "auctionItems", "users", "phoneNumbers", "auctionHouses"]
 };
 
 const dataProvider = FirebaseDataProvider(FirebaseConfig, options);
+const firebaseRealTime = FirebaseRealTimeSaga(dataProvider, {
+  watch: ["auctions", "auctionItems", "users", "phoneNumbers", "auctionHouses"]
+});
 const authProvider = AuthProvider(FirebaseConfig, options);
 
 class App extends Component {
@@ -30,6 +36,7 @@ class App extends Component {
         dataProvider={dataProvider}
         authProvider={authProvider}
         appLayout={CustomLayout}
+        customSagas={[firebaseRealTime]}
       >
         {permissions => [
           <Resource name="auctions" {...auctions} permissions={permissions} />,

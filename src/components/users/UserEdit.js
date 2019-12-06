@@ -10,7 +10,7 @@ import {
   required
 } from "react-admin";
 
-import { AuctioneerFields, UserTitle } from "./UserCommon";
+import { AuctioneerFields, UserTitle } from "@/components/users/UserCommon";
 
 class UserEditView extends Component {
   render() {

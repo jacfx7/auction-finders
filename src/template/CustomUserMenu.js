@@ -9,7 +9,6 @@ class CustomUserMenuView extends Component {
 
   render() {
     const { crudGetAll, permissions, profile, ...props } = this.props;
-    console.log("profile:", profile);
     const icon =
       profile && profile.picture ? (
         <img src={profile.picture} alt="profile" width="48" height="48" />

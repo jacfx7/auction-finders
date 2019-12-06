@@ -1,8 +1,8 @@
 import HomeIcon from "@material-ui/icons/Home";
-import HouseList from "./HouseList";
-import HouseCreate from "./HouseCreate";
-import HouseEdit from "./HouseEdit";
-import HouseShow from "./HouseShow";
+import HouseList from "@/components/auctionHouse/HouseList";
+import HouseCreate from "@/components/auctionHouse/HouseCreate";
+import HouseEdit from "@/components/auctionHouse/HouseEdit";
+import HouseShow from "@/components/auctionHouse/HouseShow";
 
 export default {
   list: HouseList,

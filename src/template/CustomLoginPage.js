@@ -1,58 +1,58 @@
 // LoginPage.js
-import React, { Component } from 'react';
+import React, { Component } from "react";
 //import { Login } from 'react-admin';
-import { connect } from 'react-redux';
-import { userLogin, Notification } from 'react-admin';
-import Button from '@material-ui/core/Button';
-import CssBaseline from '@material-ui/core/CssBaseline';
-import TextField from '@material-ui/core/TextField';
-import Link from '@material-ui/core/Link';
-import Box from '@material-ui/core/Box';
-import Typography from '@material-ui/core/Typography';
-import Card from '@material-ui/core/Card';
-import CardContent from '@material-ui/core/CardContent';
-import { makeStyles } from '@material-ui/core/styles';
-import Container from '@material-ui/core/Container';
-import GoogleButton from 'react-google-button';
+import { connect } from "react-redux";
+import { userLogin, Notification } from "react-admin";
+import Button from "@material-ui/core/Button";
+import CssBaseline from "@material-ui/core/CssBaseline";
+import TextField from "@material-ui/core/TextField";
+import Link from "@material-ui/core/Link";
+import Box from "@material-ui/core/Box";
+import Typography from "@material-ui/core/Typography";
+import Card from "@material-ui/core/Card";
+import CardContent from "@material-ui/core/CardContent";
+import { makeStyles } from "@material-ui/core/styles";
+import Container from "@material-ui/core/Container";
+import GoogleButton from "react-google-button";
 
 function Copyright() {
   return (
     <Typography variant="body2" color="textSecondary" align="center">
-      {'Copyright © '}
+      {"Copyright © "}
       <Link color="inherit" href="https://material-ui.com/">
         Auction Finders
-      </Link>{' '}
+      </Link>{" "}
       {new Date().getFullYear()}
-      {'.'}
+      {"."}
     </Typography>
   );
 }
 
 const useStyles = makeStyles(theme => ({
-  '@global': {
+  "@global": {
     body: {
       backgroundColor: theme.palette.common.white
     }
   },
   paper: {
     marginTop: theme.spacing(8),
-    display: 'flex',
-    flexDirection: 'column',
-    alignItems: 'center'
+    display: "flex",
+    flexDirection: "column",
+    alignItems: "center"
   },
   avatar: {
     margin: theme.spacing(1),
     backgroundColor: theme.palette.secondary.main
   },
   form: {
-    width: '100%', // Fix IE 11 issue.
+    width: "100%", // Fix IE 11 issue.
     marginTop: theme.spacing(1)
   },
   submit: {
     margin: theme.spacing(3, 0, 2)
   },
   button: {
-    margin: '15px 0px 0px 0px'
+    margin: "15px 0px 0px 0px"
   }
 }));
 
@@ -61,11 +61,15 @@ class CustomLoginPageView extends Component {
     e.preventDefault();
     // gather your data/credentials here
     const { email, password } = this.state;
-    this.props.userLogin({ username: email, password: password, mode: 'email' });
+    this.props.userLogin({
+      username: email,
+      password: password,
+      mode: "email"
+    });
   };
 
   socialLogin = mode => {
-    this.props.userLogin({ username: '', password: '', mode: mode });
+    this.props.userLogin({ username: "", password: "", mode: mode });
   };
 
   onChange = event => {
@@ -120,7 +124,7 @@ class CustomLoginPageView extends Component {
                 </Button>
               </form>
               <div className="mt-3">
-                <GoogleButton onClick={() => this.socialLogin('google')} />
+                <GoogleButton onClick={() => this.socialLogin("google")} />
               </div>
             </div>
             <Box mt={8}>
@@ -146,7 +150,4 @@ const mapStateToProps = state => {
   };
 };
 
-export default connect(
-  mapStateToProps,
-  { userLogin }
-)(CustomLoginPageView);
+export default connect(mapStateToProps, { userLogin })(CustomLoginPageView);

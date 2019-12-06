@@ -1,7 +1,7 @@
 import * as React from "react";
 import { Show, SimpleShowLayout, TextField } from "react-admin";
 
-import { UserTitle } from "./UserCommon";
+import { UserTitle } from "@/components/users/UserCommon";
 
 export const UserShow = props => (
   <Show title={<UserTitle />} {...props}>

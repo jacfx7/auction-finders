@@ -10,7 +10,7 @@ import {
   DateField,
   ReferenceManyField
 } from "react-admin";
-import { ItemCount } from "../common";
+import { ItemCount } from "@/components/common";
 
 const styles = theme => ({
   title: {

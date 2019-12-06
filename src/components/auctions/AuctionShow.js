@@ -10,8 +10,11 @@ import {
   TextField
 } from "react-admin";
 
-import { AuctionTitle, EditAuctionButton } from "./AuctionCommon";
-import AddItemButton from "./AddItemButton";
+import {
+  AuctionTitle,
+  EditAuctionButton
+} from "@/components/auctions/AuctionCommon";
+import AddItemButton from "@/components/auctions/AddItemButton";
 
 const AuctionShow = props => (
   <Show title={<AuctionTitle />} {...props}>

@@ -7,7 +7,7 @@ import {
   required,
   DisabledInput
 } from "react-admin";
-import { AuctionTitle } from "./AuctionCommon";
+import { AuctionTitle } from "@/components/auctions/AuctionCommon";
 
 const today = new Date();
 

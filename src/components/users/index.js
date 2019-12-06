@@ -1,8 +1,8 @@
-import UserIcon from '@material-ui/icons/People';
+import UserIcon from "@material-ui/icons/People";
 
-import UserList from './UserList';
-import UserShow from './UserShow';
-import UserEdit from './UserEdit';
+import UserList from "@/components/users/UserList";
+import UserShow from "@/components/users/UserShow";
+import UserEdit from "@/components/users/UserEdit";
 
 export default {
   list: UserList,
