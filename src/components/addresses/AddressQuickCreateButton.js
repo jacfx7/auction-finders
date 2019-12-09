@@ -11,6 +11,9 @@ import {
   SaveButton,
   SimpleForm,
   TextInput,
+  ReferenceInput,
+  AutocompleteInput,
+  SelectInput,
   CREATE,
   REDUX_FORM_NAME
 } from "react-admin";
@@ -69,7 +72,7 @@ class AddressQuickCreateButton extends Component {
         crudGetMatching(
           "addresses",
           "auctionHouses@id",
-          { page: 1, perPage: 25 },
+          { page: 1, perPage: 100 },
           { field: "id", order: "DESC" },
           {}
         );
@@ -89,6 +92,10 @@ class AddressQuickCreateButton extends Component {
   render() {
     const { showDialog } = this.state;
     const { isSubmitting, auctionHouse_id } = this.props;
+
+    const stateOptionRender = choice => {
+      return `${choice.state} (${choice.stateAbr})`;
+    };
 
     return (
       <Fragment>
@@ -114,7 +121,30 @@ class AddressQuickCreateButton extends Component {
               <TextInput source="addressLine1" validate={required()} />
               <TextInput source="addressLine2" />
               <TextInput source="city" validate={required()} />
-              <TextInput source="state" validate={required()} />
+              <ReferenceInput
+                label="State"
+                source="stateId"
+                reference="states"
+                allowEmpty
+                perPage={100}
+                sort={{ field: "state", order: "ASC" }}
+                validate={required()}
+              >
+                <AutocompleteInput
+                  optionText={stateOptionRender}
+                  optionValue="id"
+                  inputValueMatcher={(input, suggestion, getOptionText) => {
+                    debugger;
+                    return (
+                      input.toUpperCase().trim() === suggestion.state ||
+                      input.toLowerCase().trim() ===
+                        getOptionText(suggestion)
+                          .toLowerCase()
+                          .trim()
+                    );
+                  }}
+                />
+              </ReferenceInput>
               <TextInput source="zipCode" validate={required()} />
             </SimpleForm>
           </DialogContent>

@@ -44,6 +44,7 @@ class App extends Component {
           <Resource name="addresses" />,
           <Resource name="phoneNumbers" />,
           <Resource name="userTypes" />,
+          <Resource name="states" />,
           (permissions && permissions.role) === "admin" ? (
             <Resource name="users" {...users} permissions={permissions} />
           ) : null,

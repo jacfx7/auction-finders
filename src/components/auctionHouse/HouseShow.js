@@ -14,6 +14,7 @@ import {
 import { Divider } from "@material-ui/core";
 import { red } from "@material-ui/core/colors";
 import { withStyles } from "@material-ui/core/styles";
+import clsx from "clsx";
 
 import {
   EditHouseButton,
@@ -23,7 +24,7 @@ import PhoneNumberQuickCreateButton from "@/components/phoneNumber/PhoneNumberQu
 import AddressQuickCreateButton from "@/components/addresses/AddressQuickCreateButton";
 import { compose } from "recompose";
 
-const styles = theme => ({
+const styles = {
   bold: {
     fontWeight: "bold"
   },
@@ -40,13 +41,11 @@ const styles = theme => ({
   inlineFlex: {
     display: "inline-flex"
   }
-});
+};
 
 class HouseShow extends Component {
-  //= withStyles(styles)(({ permissions, classes, ...props }) => {
-
   render() {
-    const { classes, refreshView } = this.props;
+    const { classes, className, refreshView } = this.props;
 
     const refreshEvent = () => {
       refreshView();
@@ -57,9 +56,11 @@ class HouseShow extends Component {
         <TabbedShowLayout>
           <Tab label="Summary">
             <TextField label="Name" source="name" />
-            <Divider class={classes.padFive} />
+            <Divider className={clsx(classes.padFive, className)} />
             <Fragment>
-              <div class={classes.inlineFlex}>Phone Numbers:</div>
+              <div className={clsx(classes.inlineFlex, className)}>
+                Phone Numbers:
+              </div>
               <PhoneNumberQuickCreateButton
                 refreshCallback={refreshEvent}
                 {...this.props}
@@ -76,9 +77,11 @@ class HouseShow extends Component {
                 tertiaryText={rec => rec.type}
               ></SimpleList>
             </ReferenceManyField>
-            <Divider class={classes.padFive} />
+            <Divider className={clsx(classes.padFive, className)} />
             <Fragment>
-              <div class={classes.inlineFlex}>Addresses:</div>
+              <div className={clsx(classes.inlineFlex, className)}>
+                Addresses:
+              </div>
               <AddressQuickCreateButton
                 refreshCallback={refreshEvent}
                 {...this.props}
@@ -94,7 +97,7 @@ class HouseShow extends Component {
                 tertiaryText={rec => `${rec.city}, ${rec.state}`}
               ></SimpleList>
             </ReferenceManyField>
-            <Divider class={classes.padFive} />
+            <Divider className={clsx(classes.padFive, className)} />
             <EditHouseButton />
           </Tab>
           <Tab label="Users" path="users">
