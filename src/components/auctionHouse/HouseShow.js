@@ -12,9 +12,9 @@ import {
   SimpleList
 } from "react-admin";
 import { Divider } from "@material-ui/core";
-import { red } from "@material-ui/core/colors";
 import { withStyles } from "@material-ui/core/styles";
 import clsx from "clsx";
+import { compose } from "recompose";
 
 import {
   EditHouseButton,
@@ -22,21 +22,14 @@ import {
 } from "@/components/auctionHouse/HouseCommon";
 import PhoneNumberQuickCreateButton from "@/components/phoneNumber/PhoneNumberQuickCreateButton";
 import AddressQuickCreateButton from "@/components/addresses/AddressQuickCreateButton";
-import { compose } from "recompose";
 
 const styles = {
   bold: {
     fontWeight: "bold"
   },
   padFive: {
-    paddingTop: "5px"
-  },
-  media: {
-    height: 0,
-    paddingTop: "56.25%"
-  },
-  avatar: {
-    backgroundColor: red[500]
+    paddingTop: "5px",
+    paddingBottom: "3px"
   },
   inlineFlex: {
     display: "inline-flex"
@@ -45,25 +38,23 @@ const styles = {
 
 class HouseShow extends Component {
   render() {
-    const { classes, className, refreshView } = this.props;
+    const { classes, refreshView, ...rest } = this.props;
 
     const refreshEvent = () => {
       refreshView();
     };
 
     return (
-      <Show title={<AuctionHouseTitle />} {...this.props}>
+      <Show title={<AuctionHouseTitle />} {...rest}>
         <TabbedShowLayout>
           <Tab label="Summary">
             <TextField label="Name" source="name" />
-            <Divider className={clsx(classes.padFive, className)} />
+            <Divider className={clsx(classes.padFive)} />
             <Fragment>
-              <div className={clsx(classes.inlineFlex, className)}>
-                Phone Numbers:
-              </div>
+              <div className={clsx(classes.inlineFlex)}>Phone Numbers:</div>
               <PhoneNumberQuickCreateButton
                 refreshCallback={refreshEvent}
-                {...this.props}
+                {...rest}
               />
             </Fragment>
             <ReferenceManyField
@@ -77,14 +68,12 @@ class HouseShow extends Component {
                 tertiaryText={rec => rec.type}
               ></SimpleList>
             </ReferenceManyField>
-            <Divider className={clsx(classes.padFive, className)} />
+            <Divider className={clsx(classes.padFive)} />
             <Fragment>
-              <div className={clsx(classes.inlineFlex, className)}>
-                Addresses:
-              </div>
+              <div className={clsx(classes.inlineFlex)}>Addresses:</div>
               <AddressQuickCreateButton
                 refreshCallback={refreshEvent}
-                {...this.props}
+                {...rest}
               />
             </Fragment>
             <ReferenceManyField
@@ -94,10 +83,10 @@ class HouseShow extends Component {
             >
               <SimpleList
                 primaryText={rec => rec.addressLine1}
-                tertiaryText={rec => `${rec.city}, ${rec.state}`}
+                tertiaryText={rec => `${rec.city}, ${rec.stateId}`}
               ></SimpleList>
             </ReferenceManyField>
-            <Divider className={clsx(classes.padFive, className)} />
+            <Divider className={clsx(classes.padFive)} />
             <EditHouseButton />
           </Tab>
           <Tab label="Users" path="users">

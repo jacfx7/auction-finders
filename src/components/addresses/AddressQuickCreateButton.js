@@ -12,7 +12,6 @@ import {
   SimpleForm,
   TextInput,
   ReferenceInput,
-  AutocompleteInput,
   SelectInput,
   CREATE,
   REDUX_FORM_NAME
@@ -130,19 +129,9 @@ class AddressQuickCreateButton extends Component {
                 sort={{ field: "state", order: "ASC" }}
                 validate={required()}
               >
-                <AutocompleteInput
+                <SelectInput
                   optionText={stateOptionRender}
-                  optionValue="id"
-                  inputValueMatcher={(input, suggestion, getOptionText) => {
-                    debugger;
-                    return (
-                      input.toUpperCase().trim() === suggestion.state ||
-                      input.toLowerCase().trim() ===
-                        getOptionText(suggestion)
-                          .toLowerCase()
-                          .trim()
-                    );
-                  }}
+                  optionValue="stateAbr"
                 />
               </ReferenceInput>
               <TextInput source="zipCode" validate={required()} />

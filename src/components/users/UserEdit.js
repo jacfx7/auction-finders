@@ -16,7 +16,7 @@ class UserEditView extends Component {
   render() {
     const { hasCreate, hasShow, ...rest } = this.props;
     return (
-      <Edit title={<UserTitle />} {...this.props}>
+      <Edit title={<UserTitle />} {...rest}>
         <SimpleForm>
           <DisabledInput source="id" />
           <ReferenceInput
