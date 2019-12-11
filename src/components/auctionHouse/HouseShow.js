@@ -65,7 +65,7 @@ class HouseShow extends Component {
               <SimpleList
                 linkType="none"
                 primaryText={rec => rec.phoneNumber}
-                tertiaryText={rec => rec.type}
+                secondaryText={rec => rec.type}
               ></SimpleList>
             </ReferenceManyField>
             <Divider className={clsx(classes.padFive)} />
@@ -83,7 +83,8 @@ class HouseShow extends Component {
             >
               <SimpleList
                 primaryText={rec => rec.addressLine1}
-                tertiaryText={rec => `${rec.city}, ${rec.stateId}`}
+                secondaryText={rec => `${rec.city}, ${rec.stateId}`}
+                tertiaryText={rec => rec.type}
               ></SimpleList>
             </ReferenceManyField>
             <Divider className={clsx(classes.padFive)} />
