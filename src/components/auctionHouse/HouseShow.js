@@ -22,6 +22,7 @@ import {
 } from "@/components/auctionHouse/HouseCommon";
 import PhoneNumberQuickCreateButton from "@/components/phoneNumber/PhoneNumberQuickCreateButton";
 import AddressQuickCreateButton from "@/components/addresses/AddressQuickCreateButton";
+import HouseAddUserButton from "./HouseAddUserButton";
 
 const styles = {
   bold: {
@@ -91,6 +92,7 @@ class HouseShow extends Component {
             <EditHouseButton />
           </Tab>
           <Tab label="Users" path="users">
+            <HouseAddUserButton />
             <ReferenceManyField
               addLabel={false}
               reference="users"
