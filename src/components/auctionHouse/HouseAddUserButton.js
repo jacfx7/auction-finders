@@ -6,7 +6,6 @@ import {
   fetchStart,
   fetchEnd,
   showNotification,
-  TextField,
   SaveButton,
   Button,
   SimpleForm,
@@ -41,6 +40,9 @@ const styles = {
   padFive: {
     paddingTop: "5px",
     paddingBottom: "3px"
+  },
+  padTop: {
+    paddingTop: "10px"
   },
   inlineFlex: {
     display: "inline-flex"
@@ -105,13 +107,15 @@ class HouseAddUserButton extends Component {
 
   render() {
     const { showDialog } = this.state;
-    const { classes, isSubmitting, auctionHouse_id } = this.props;
+    const { classes, isSubmitting } = this.props;
 
     return (
       <Fragment>
-        <Button onClick={this.handleClick} label="ra.action.add">
-          <IconContentAdd />
-        </Button>
+        <div className={clsx(classes.padTop)}>
+          <Button onClick={this.handleClick} label="ra.action.add">
+            <IconContentAdd />
+          </Button>
+        </div>
         <Dialog
           fullWidth
           open={showDialog}
@@ -120,7 +124,12 @@ class HouseAddUserButton extends Component {
         >
           <DialogTitle>Add User</DialogTitle>
           <DialogContent>
-            <SimpleForm></SimpleForm>
+            <SimpleForm
+              form="house-use-add"
+              resource=""
+              onSubmit={this.handleSubmit}
+              toolbar={null}
+            ></SimpleForm>
           </DialogContent>
           <DialogActions>
             <SaveButton saving={isSubmitting} onClick={this.handleSaveClick} />
@@ -138,7 +147,7 @@ function mapStateToProps(state, props) {
   const auctionHouse_id = props.id;
   return {
     auctionHouse_id: auctionHouse_id,
-    isSubmitting: isSubmitting("phoneNumber-quick-create")(state)
+    isSubmitting: isSubmitting("house-use-add")(state)
   };
 }
 
