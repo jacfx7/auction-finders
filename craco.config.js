@@ -8,8 +8,9 @@ module.exports = {
   },
   jest: {
     configure: {
+      modulePaths: "<rootDir>/node_modules/",
       moduleNameMapper: {
-        "^@(.*)$": "<rootDir>/src$1"
+        "^@/(.*)$": "<rootDir>/src/$1"
       }
     }
   }
