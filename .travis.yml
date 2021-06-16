@@ -8,10 +8,12 @@ install:
 script:
   - npm test
   - npm run build
-deploy:
-  provider: firebase
-  token:
-    secure: '1//046pinMcxjSX1CgYIARAAGAQSNwF-L9Ir3WRSSR7rSebnXmhdo-CZt9uImxBJmXkATFUFcQIEHG_e1gbnKFROLkmMTCR2LtMyO_A'
-  edge:
-    branch: master
-  only: 'hosting:admin-app'
+script:
+  - firebase deploy --only hosting:admin-app --token '1//046pinMcxjSX1CgYIARAAGAQSNwF-L9Ir3WRSSR7rSebnXmhdo-CZt9uImxBJmXkATFUFcQIEHG_e1gbnKFROLkmMTCR2LtMyO_A'
+#deploy:
+#  provider: firebase
+#  token:
+#    secure: '1//046pinMcxjSX1CgYIARAAGAQSNwF-L9Ir3WRSSR7rSebnXmhdo-CZt9uImxBJmXkATFUFcQIEHG_e1gbnKFROLkmMTCR2LtMyO_A'
+#  edge:
+#    branch: master
+#  only: 'hosting:admin-app'
