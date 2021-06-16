@@ -8,11 +8,4 @@ install:
 script:
   - npm test
   - npm run build
-  - firebase deploy --only hosting:admin-app --token $ci_token
-#deploy:
-#  provider: firebase
-#  token:
-#    secure: '1//046pinMcxjSX1CgYIARAAGAQSNwF-L9Ir3WRSSR7rSebnXmhdo-CZt9uImxBJmXkATFUFcQIEHG_e1gbnKFROLkmMTCR2LtMyO_A'
-#  edge:
-#    branch: master
-#  only: 'hosting:admin-app'
+  - firebase deploy --only hosting:admin-app --token $CI_TOKEN
