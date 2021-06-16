@@ -7,9 +7,11 @@ const styles = {
   icon: { float: 'right', width: 64, height: 64, padding: 16, color: '#ff9800' }
 };
 
-export default ({ value }) => (
+const CardExport = ({ value }) => (
   <Card style={styles.card}>
     <Icon style={styles.icon}>gavel</Icon>
     <CardTitle title={value} subtitle={'Auctions Created in Last 30 Days'} />
   </Card>
 );
+
+export default CardExport;

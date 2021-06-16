@@ -10,7 +10,7 @@ const styles = {
   icon: { float: 'right', width: 64, height: 64, padding: 16, color: '#4caf50' }
 };
 
-export default ({ items = [], nb, title }) => (
+const CardExport = ({ items = [], nb, title }) => (
   <Card style={styles.card}>
     <Icon style={styles.icon}>ballot</Icon>
     <CardTitle title={nb} subtitle={title} />
@@ -28,3 +28,5 @@ export default ({ items = [], nb, title }) => (
     </List>
   </Card>
 );
+
+export default CardExport;

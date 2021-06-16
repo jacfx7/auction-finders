@@ -10,7 +10,7 @@ const styles = {
   icon: { float: 'right', width: 64, height: 64, padding: 16, color: '#4caf50' }
 };
 
-export default ({ value, title, auctionList = [] }) => (
+const CardExport = ({ value, title, auctionList = [] }) => (
   <Card style={styles.card}>
     <Icon style={styles.icon}>gavel</Icon>
     <CardTitle title={value} subtitle={title} />
@@ -23,3 +23,5 @@ export default ({ value, title, auctionList = [] }) => (
     </List>
   </Card>
 );
+
+export default CardExport;
