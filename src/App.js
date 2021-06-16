@@ -2,7 +2,8 @@ import React, { Component } from "react";
 import { Admin, Resource } from "react-admin";
 import {
   FirebaseDataProvider,
-  FirebaseRealTimeSaga
+  FirebaseRealTimeSaga,
+  FirebaseAuthProvider
 } from "react-admin-firebase";
 
 import "@/App.css";
@@ -22,10 +23,8 @@ const options = {
 };
 
 const dataProvider = FirebaseDataProvider(FirebaseConfig, options);
-const firebaseRealTime = FirebaseRealTimeSaga(dataProvider, {
-  watch: ["auctions", "auctionItems", "users", "phoneNumbers", "auctionHouses"]
-});
-const authProvider = AuthProvider(FirebaseConfig, options);
+//const firebaseRealTime = FirebaseRealTimeSaga(dataProvider, options);
+const authProvider = FirebaseAuthProvider(FirebaseConfig, options);
 
 class App extends Component {
   render() {
@@ -36,7 +35,7 @@ class App extends Component {
         dataProvider={dataProvider}
         authProvider={authProvider}
         appLayout={CustomLayout}
-        customSagas={[firebaseRealTime]}
+        //customSagas={[firebaseRealTime]}
       >
         {permissions => [
           <Resource name="auctions" {...auctions} permissions={permissions} />,
