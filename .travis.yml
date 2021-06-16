@@ -8,7 +8,7 @@ install:
 script:
   - npm test
   - npm run build
-  - firebase deploy --only hosting:admin-app --token ci_token
+  - firebase deploy --only hosting:admin-app --token $ci_token
 #deploy:
 #  provider: firebase
 #  token:
