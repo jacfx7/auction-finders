@@ -4,10 +4,12 @@ import HouseCreate from "@/components/auctionHouse/HouseCreate";
 import HouseEdit from "@/components/auctionHouse/HouseEdit";
 import HouseShow from "@/components/auctionHouse/HouseShow";
 
-export default {
+const AuctionHouseViews = {
   list: HouseList,
   create: HouseCreate,
   edit: HouseEdit,
   show: HouseShow,
   icon: HomeIcon
 };
+
+export default AuctionHouseViews; 

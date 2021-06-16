@@ -4,10 +4,12 @@ import AuctionShow from "@/components/auctions/AuctionShow";
 import AuctionCreate from "@/components/auctions/AuctionCreate";
 import AuctionEdit from "@/components/auctions/AuctionEdit";
 
-export default {
+const AuctionViews = {
   create: AuctionCreate,
   list: AuctionList,
   edit: AuctionEdit,
   show: AuctionShow,
   icon: BookIcon
 };
+
+export default AuctionViews;

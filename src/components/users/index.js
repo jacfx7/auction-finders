@@ -4,9 +4,11 @@ import UserList from "@/components/users/UserList";
 import UserShow from "@/components/users/UserShow";
 import UserEdit from "@/components/users/UserEdit";
 
-export default {
+const UserViews = {
   list: UserList,
   edit: UserEdit,
   show: UserShow,
   icon: UserIcon
 };
+
+export default UserViews;
