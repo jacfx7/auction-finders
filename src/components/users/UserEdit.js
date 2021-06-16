@@ -2,7 +2,6 @@ import React, { Component } from "react";
 import { connect } from "react-redux";
 import {
   Edit,
-  DisabledInput,
   SimpleForm,
   TextInput,
   ReferenceInput,
@@ -18,7 +17,7 @@ class UserEditView extends Component {
     return (
       <Edit title={<UserTitle />} {...rest}>
         <SimpleForm>
-          <DisabledInput source="id" />
+          <TextInput disabled source="id" />
           <ReferenceInput
             source="userTypeId"
             reference="userTypes"
@@ -27,8 +26,8 @@ class UserEditView extends Component {
           >
             <SelectInput optionText="name" />
           </ReferenceInput>
-          <DisabledInput source="createdate" />
-          <DisabledInput source="lastupdate" />
+          <TextInput disabled source="createdate" />
+          <TextInput disabled source="lastupdate" />
           <TextInput source="name" validate={required()} />
           <TextInput source="email" validate={required()} />
           <AuctioneerFields {...rest} />

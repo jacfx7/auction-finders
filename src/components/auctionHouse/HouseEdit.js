@@ -1,11 +1,11 @@
 import React from "react";
-import { Edit, SimpleForm, DisabledInput } from "react-admin";
+import { Edit, SimpleForm, TextInput } from "react-admin";
 
 const HouseEdit = props => {
   return (
     <Edit {...props}>
       <SimpleForm>
-        <DisabledInput source="name" />
+        <TextInput disabled source="name" />
       </SimpleForm>
     </Edit>
   );

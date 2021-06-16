@@ -2,10 +2,9 @@ import React from "react";
 import {
   Edit,
   DateTimeInput,
-  LongTextInput,
+  TextInput,
   SimpleForm,
-  required,
-  DisabledInput
+  required
 } from "react-admin";
 import { AuctionTitle } from "@/components/auctions/AuctionCommon";
 
@@ -15,9 +14,9 @@ const AuctionEdit = props => {
   return (
     <Edit title={<AuctionTitle />} {...props}>
       <SimpleForm defaultValue={{ date: today }}>
-        <DisabledInput label="Id" source="id" />
+        <TextInput disabled label="Id" source="id" />
         <DateTimeInput source="date" validate={required()} />
-        <LongTextInput source="description" />
+        <TextInput multiline source="description" />
       </SimpleForm>
     </Edit>
   );

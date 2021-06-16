@@ -1,7 +1,6 @@
 import React from 'react';
 import {
   Create,
-  DisabledInput,
   TextInput,
   ReferenceInput,
   SelectInput,
@@ -23,7 +22,7 @@ const ItemCreate = props => {
         <ReferenceInput source="auction_id" reference="auctions" allowEmpty validate={required()}>
           <SelectInput optionText="description" />
         </ReferenceInput>
-        <DisabledInput source="created_at" />
+        <TextInput disabled source="created_at" />
         <TextInput source="title" />
         <TextInput source="description" />
       </SimpleForm>
