@@ -11,7 +11,7 @@ script:
 deploy:
   provider: firebase
   token:
-    secure: '1//0fI75lRkxylozCgYIARAAGA8SNwF-L9IrMK8Fw5kv-Uyk_-rGnpaAAk-S5RDmHfnE7jrZZAVeXxLvh2z-STRIHdx7z0gCSzQSVKk'
+    secure: '1//046pinMcxjSX1CgYIARAAGAQSNwF-L9Ir3WRSSR7rSebnXmhdo-CZt9uImxBJmXkATFUFcQIEHG_e1gbnKFROLkmMTCR2LtMyO_A'
   edge:
     branch: master
   only: 'hosting:admin-app'
